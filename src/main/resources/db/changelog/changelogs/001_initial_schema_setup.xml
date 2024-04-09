@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="create_sky_manager_schema" author="anna">
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS sky_manager;
+        </sql>
+    </changeSet>
+
+    <!--aircraft_model (id, name)
+aircraft (id, registration_plate, model_id, passenger_capacity, max_gross_weight,course_speed_limit и что еще нужно)
+employee (id, name, surname, type (пилот или бортпроводник, предлагаю это хранить в енаме) +
+ у сотрудника есть список моделей самолетов, на которых ему разрешено работать, это будет
+  реализовано при помощи дополнительной таблицы: employee_id, plane_model_id)
+рейс (id, plane_id, crew_id, destination_id, takeoff_date_time, travel_time)
+экипаж (id, base_city, + дополнительная таблица для хранения списка членов экипажа
+( id, crew_id, employee_id, is_captain
+-->
+    <changeSet id="create_aircraft_model_id_seq" author="anna">
+        <createSequence sequenceName="aircraft_model_id_seq" incrementBy="1" schemaName="sky_manager"/>
+    </changeSet>
+    <changeSet id="create_aircraft_model_table" author="anna">
+        <createTable tableName="aircraft_model" schemaName="sky_manager">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_aircraft_id_seq" author="anna">
+        <createSequence sequenceName="aircraft_id_seq" incrementBy="1" schemaName="sky_manager"/>
+    </changeSet>
+
+    <changeSet id="create_aircraft_table" author="anna">
+        <createTable tableName="aircraft" schemaName="sky_manager">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="registration_plate" type="varchar(200)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="aircraft_model_id" type="bigint"/>
+            <column name="passenger_capacity" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_gross_weight" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="course_speed_limit" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="aircraft" baseColumnNames="aircraft_model_id"
+                                 constraintName="aircraft_model_fk" referencedTableName="aircraft_model"
+                                 referencedColumnNames="id" baseTableSchemaName="sky_manager"
+                                 referencedTableSchemaName="sky_manager"/>
+    </changeSet>
+
+    <changeSet id="create_employee_id_seq" author="anna">
+        <createSequence sequenceName="employee_id_seq" incrementBy="1" schemaName="sky_manager"/>
+    </changeSet>
+
+    <changeSet id="create_employee_table" author="anna">
+        <createTable tableName="employee" schemaName="sky_manager">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(15)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_aircraft_access_id_seq" author="anna">
+        <createSequence sequenceName="aircraft_access_id_seq" incrementBy="1" schemaName="sky_manager"/>
+    </changeSet>
+
+    <changeSet id="create_aircraft_access_table" author="anna">
+        <createTable tableName="aircraft_access" schemaName="sky_manager">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="employee_id" type="bigint"/>
+            <column name="aircraft_model_id" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="aircraft_access" baseColumnNames="employee_id"
+                                 constraintName="aircraft_access_employee_fk" referencedTableName="employee"
+                                 referencedColumnNames="id" baseTableSchemaName="sky_manager"
+                                 referencedTableSchemaName="sky_manager"/>
+        <addForeignKeyConstraint baseTableName="aircraft_access" baseColumnNames="aircraft_model_id"
+                                 constraintName="aircraft_access_model_fk" referencedTableName="aircraft_model"
+                                 referencedColumnNames="id" baseTableSchemaName="sky_manager"
+                                 referencedTableSchemaName="sky_manager"/>
+
+    </changeSet>
+
+    <changeSet id="create_direction_id_seq" author="anna">
+        <createSequence sequenceName="direction_id_seq" incrementBy="1" schemaName="sky_manager"/>
+    </changeSet>
+
+    <changeSet id="create_direction_table" author="anna">
+        <createTable tableName="direction" schemaName="sky_manager">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="from" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_crew_id_seq" author="anna">
+        <createSequence sequenceName="crew_id_seq" incrementBy="1" schemaName="sky_manager"/>
+    </changeSet>
+
+    <changeSet id="create_crew_table" author="anna">
+        <createTable tableName="crew" schemaName="sky_manager">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="base_city" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_crew_list_id_seq" author="anna">
+        <createSequence sequenceName="crew_list_id_seq" incrementBy="1" schemaName="sky_manager"/>
+    </changeSet>
+
+    <changeSet id="create_crew_list_table" author="anna">
+        <createTable tableName="crew_list" schemaName="sky_manager">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="crew_id" type="bigint"/>
+            <column name="employee_id" type="bigint"/>
+            <column name="is_captain" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="crew_list" baseColumnNames="employee_id"
+                                 constraintName="crew_list_employee_fk" referencedTableName="employee"
+                                 referencedColumnNames="id" baseTableSchemaName="sky_manager"
+                                 referencedTableSchemaName="sky_manager"/>
+        <addForeignKeyConstraint baseTableName="crew_list" baseColumnNames="crew_id"
+                                 constraintName="crew_list_fk" referencedTableName="crew"
+                                 referencedColumnNames="id" baseTableSchemaName="sky_manager"
+                                 referencedTableSchemaName="sky_manager"/>
+    </changeSet>
+
+    <changeSet id="create_flight_id_seq" author="anna">
+        <createSequence sequenceName="flight_id_seq" incrementBy="1" schemaName="sky_manager"/>
+    </changeSet>
+
+
+    <changeSet id="create_flight_table" author="anna">
+        <createTable tableName="flight" schemaName="sky_manager">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="aircraft_id" type="bigint"/>
+            <column name="crew_id" type="bigint"/>
+            <column name="direction_id" type="bigint"/>
+            <column name="takeoff_date_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="travel_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="flight" baseColumnNames="aircraft_id"
+                                 constraintName="flight_aircraft_fk" referencedTableName="aircraft"
+                                 referencedColumnNames="id" baseTableSchemaName="sky_manager"
+                                 referencedTableSchemaName="sky_manager"/>
+        <addForeignKeyConstraint baseTableName="flight" baseColumnNames="crew_id"
+                                 constraintName="flight_crew_fk" referencedTableName="crew"
+                                 referencedColumnNames="id" baseTableSchemaName="sky_manager"
+                                 referencedTableSchemaName="sky_manager"/>
+        <addForeignKeyConstraint baseTableName="flight" baseColumnNames="direction_id"
+                                 constraintName="flight_direction_fk" referencedTableName="direction"
+                                 referencedColumnNames="id" baseTableSchemaName="sky_manager"
+                                 referencedTableSchemaName="sky_manager"/>
+    </changeSet>
+
+</databaseChangeLog>
