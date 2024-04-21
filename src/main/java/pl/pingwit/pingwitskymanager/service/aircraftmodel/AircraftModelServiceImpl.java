@@ -37,7 +37,7 @@ public class AircraftModelServiceImpl implements AircraftModelService {
 
     @Override
     public Integer createModel(String name) {
-        if (aircraftModelRepository.existsByName(name)) {
+        if (aircraftModelRepository.existsByName(name)) { // в дальнейшем, эту логику нужно будет перенести в валидатор
             throw new AircraftAlreadyExistsException(String.format("Aircraft model with name '%s' already exists", name));
         }
         AircraftModel aircraftModel = aircraftModelConverter.toEntity(name);

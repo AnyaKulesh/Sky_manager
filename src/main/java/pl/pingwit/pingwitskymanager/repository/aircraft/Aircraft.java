@@ -11,15 +11,20 @@ public class Aircraft {
     @SequenceGenerator(name = "aircraft_id_gen", sequenceName = "aircraft_id_seq", schema = "sky_manager", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "registration_plate")
     private String registrationPlate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aircraft_model_id")
     private AircraftModel model;
+
     @Column(name = "passenger_capacity")
     private Integer passengerCapacity;
+
     @Column(name = "max_gross_weight")
     private Integer maxGrossWeight;
+
     @Column(name = "courseSpeedLimit")
     private Integer courseSpeedLimit;
 

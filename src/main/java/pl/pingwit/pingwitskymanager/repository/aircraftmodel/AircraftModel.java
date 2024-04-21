@@ -17,6 +17,10 @@ public class AircraftModel {
     public AircraftModel() {
     }
 
+    public AircraftModel(String name) {
+        this.name = name;
+    }
+
     public AircraftModel(Integer id, String name) {
         this.id = id;
         this.name = name;

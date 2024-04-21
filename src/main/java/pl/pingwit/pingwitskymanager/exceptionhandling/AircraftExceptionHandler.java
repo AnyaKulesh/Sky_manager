@@ -16,6 +16,7 @@ public class AircraftExceptionHandler {
 
     @ExceptionHandler(AircraftAlreadyExistsException.class)
     public ResponseEntity<String> handleAlreadyExistsException(AircraftAlreadyExistsException e) {
-        return ResponseEntity.status(FORBIDDEN).body(e.getMessage());
+        return ResponseEntity.status(FORBIDDEN).body(e.getMessage()); // статус код 403 FORBIDDEN применяется,
+        // когда у пользователя не хватает прав для совершения операции. в данном случае правльно буждет вернуть 400 BAD_REQUEST
     }
 }

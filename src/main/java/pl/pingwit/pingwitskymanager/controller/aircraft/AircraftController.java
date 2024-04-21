@@ -19,18 +19,20 @@ public class AircraftController {
         return aircraftService.getAllAircraft();
     }
 
-    @GetMapping ("/{id}")
-    public AircraftDto findAircraftById(@PathVariable Integer id){
+    @GetMapping("/{id}")
+    public AircraftDto findAircraftById(@PathVariable Integer id) {
         return aircraftService.getAircraftById(id);
     }
 
     @PostMapping
-    public Integer createAircraft(@RequestBody CreateAircraftInputDto aircraftInputDto){
+    public Integer createAircraft(@RequestBody CreateAircraftInputDto aircraftInputDto) {
         return aircraftService.createAircraft(aircraftInputDto);
     }
 
-    @PutMapping ("/{id}")
-    public void updateAircraft(@RequestParam String registrationPlate, @PathVariable Integer id){
-        aircraftService.updateAircraft(id,registrationPlate);
+    @PutMapping("/{id}")
+    public void updateAircraft(@RequestParam String registrationPlate, @PathVariable Integer id) {
+        // здесь нужно работать не через @RequestParam, а через @RequestBody. Даже если сейчас обновить можно только рег номер.
+        // во-первых, в будущем количество параметров для обновления может увеличиться. во-вторых, REST предполагает использование тела запроса в PUT запросах
+        aircraftService.updateAircraft(id, registrationPlate);
     }
 }
