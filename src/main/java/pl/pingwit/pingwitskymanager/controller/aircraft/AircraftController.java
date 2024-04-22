@@ -30,9 +30,7 @@ public class AircraftController {
     }
 
     @PutMapping("/{id}")
-    public void updateAircraft(@RequestParam String registrationPlate, @PathVariable Integer id) {
-        // здесь нужно работать не через @RequestParam, а через @RequestBody. Даже если сейчас обновить можно только рег номер.
-        // во-первых, в будущем количество параметров для обновления может увеличиться. во-вторых, REST предполагает использование тела запроса в PUT запросах
+    public void updateAircraft(@RequestBody String registrationPlate, @PathVariable Integer id) {
         aircraftService.updateAircraft(id, registrationPlate);
     }
 }

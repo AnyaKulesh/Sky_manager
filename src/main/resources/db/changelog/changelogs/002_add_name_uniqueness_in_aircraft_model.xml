@@ -6,5 +6,13 @@
     <changeSet id="add_name_uniqueness_in_aircraft_model.xml" author="pavel">
         <addUniqueConstraint tableName="aircraft_model" columnNames="name" schemaName="sky_manager"/>
     </changeSet>
+    
+    <changeSet id="add_email_uniqueness_in_employee.xml" author="anna">
+        <addUniqueConstraint tableName="employee" columnNames="email" schemaName="sky_manager"/>
+    </changeSet>
+
+    <changeSet id="add_from_to_uniqueness_in_direction.xml" author="anna">
+        <addUniqueConstraint tableName="direction" columnNames="from,to" schemaName="sky_manager"/>
+    </changeSet>
 
 </databaseChangeLog>

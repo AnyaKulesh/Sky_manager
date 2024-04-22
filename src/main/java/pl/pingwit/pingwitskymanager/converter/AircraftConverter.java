@@ -33,10 +33,8 @@ public class AircraftConverter {
     public Aircraft toEntity(CreateAircraftInputDto aircraftInputDto) {
         Aircraft aircraft = new Aircraft();
 
-
-        aircraft.setModel(aircraftModelRepository.findByName(aircraftInputDto.getModel()) // ищем модель по имени и если нашли - стеаем ее
-                .orElse(new AircraftModel(aircraftInputDto.getModel()))); // если не нашли - создаем новую модель
-        // (но в базу пока что не сохраняем!! сохранение произойдет, когда в сервисе ты вызовешь метод aircraftRepository.save(aircraft)
+        aircraft.setModel(aircraftModelRepository.findByName(aircraftInputDto.getModel())
+                .orElse(new AircraftModel(aircraftInputDto.getModel())));
 
         aircraft.setRegistrationPlate(aircraftInputDto.getRegistrationPlate());
         aircraft.setPassengerCapacity(aircraftInputDto.getPassengerCapacity());
@@ -44,6 +42,4 @@ public class AircraftConverter {
         aircraft.setCourseSpeedLimit(aircraftInputDto.getCourseSpeedLimit());
         return aircraft;
     }
-
-
 }

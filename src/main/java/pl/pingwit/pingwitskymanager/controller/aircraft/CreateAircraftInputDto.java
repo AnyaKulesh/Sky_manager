@@ -14,7 +14,6 @@ public class CreateAircraftInputDto {
 
     public CreateAircraftInputDto(String registrationPlate, String model, Integer passengerCapacity, Integer maxGrossWeight, Integer courseSpeedLimit) {
         this.registrationPlate = registrationPlate;
-        model = model; // эта строчка не отработает
         this.model = model;
         this.passengerCapacity = passengerCapacity;
         this.maxGrossWeight = maxGrossWeight;

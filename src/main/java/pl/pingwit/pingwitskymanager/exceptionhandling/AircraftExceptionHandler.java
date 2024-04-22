@@ -4,19 +4,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
 public class AircraftExceptionHandler {
-    @ExceptionHandler(AircraftNotFoundException.class)
-    public ResponseEntity<String> handleNotFoundException(AircraftNotFoundException e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
     }
 
-    @ExceptionHandler(AircraftAlreadyExistsException.class)
-    public ResponseEntity<String> handleAlreadyExistsException(AircraftAlreadyExistsException e) {
-        return ResponseEntity.status(FORBIDDEN).body(e.getMessage()); // статус код 403 FORBIDDEN применяется,
-        // когда у пользователя не хватает прав для совершения операции. в данном случае правльно буждет вернуть 400 BAD_REQUEST
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<String> handleAlreadyExistsException(AlreadyExistsException e) {
+        return ResponseEntity.status(BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<String> handleValidationException(ValidationException e) {
+        return ResponseEntity.status(BAD_REQUEST).body(e.getMessage());
     }
 }

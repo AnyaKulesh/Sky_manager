@@ -3,10 +3,10 @@ package pl.pingwit.pingwitskymanager.service.aircraftmodel;
 import org.springframework.stereotype.Service;
 import pl.pingwit.pingwitskymanager.controller.aircraftmodel.AircraftModelDto;
 import pl.pingwit.pingwitskymanager.converter.AircraftModelConverter;
-import pl.pingwit.pingwitskymanager.exceptionhandling.AircraftAlreadyExistsException;
-import pl.pingwit.pingwitskymanager.exceptionhandling.AircraftNotFoundException;
+import pl.pingwit.pingwitskymanager.exceptionhandling.NotFoundException;
 import pl.pingwit.pingwitskymanager.repository.aircraftmodel.AircraftModel;
 import pl.pingwit.pingwitskymanager.repository.aircraftmodel.AircraftModelRepository;
+import pl.pingwit.pingwitskymanager.validator.AircraftModelValidator;
 
 import java.util.List;
 
@@ -15,10 +15,12 @@ public class AircraftModelServiceImpl implements AircraftModelService {
 
     private final AircraftModelRepository aircraftModelRepository;
     private final AircraftModelConverter aircraftModelConverter;
+    private final AircraftModelValidator aircraftModelValidator;
 
-    public AircraftModelServiceImpl(AircraftModelRepository aircraftModelRepository, AircraftModelConverter aircraftModelConverter) {
+    public AircraftModelServiceImpl(AircraftModelRepository aircraftModelRepository, AircraftModelConverter aircraftModelConverter, AircraftModelValidator aircraftModelValidator) {
         this.aircraftModelRepository = aircraftModelRepository;
         this.aircraftModelConverter = aircraftModelConverter;
+        this.aircraftModelValidator = aircraftModelValidator;
     }
 
     @Override
@@ -32,14 +34,12 @@ public class AircraftModelServiceImpl implements AircraftModelService {
     public AircraftModelDto getById(Integer id) {
         return aircraftModelRepository.findById(id)
                 .map(aircraftModelConverter::toDto)
-                .orElseThrow(() -> new AircraftNotFoundException(String.format("Aircraft model with id not found: %d", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Aircraft model with id not found: %d", id)));
     }
 
     @Override
     public Integer createModel(String name) {
-        if (aircraftModelRepository.existsByName(name)) { // в дальнейшем, эту логику нужно будет перенести в валидатор
-            throw new AircraftAlreadyExistsException(String.format("Aircraft model with name '%s' already exists", name));
-        }
+        aircraftModelValidator.validateOnCreate(name);
         AircraftModel aircraftModel = aircraftModelConverter.toEntity(name);
         return aircraftModelRepository.save(aircraftModel).getId();
     }
