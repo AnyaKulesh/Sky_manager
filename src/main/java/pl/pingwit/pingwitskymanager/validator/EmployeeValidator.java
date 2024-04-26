@@ -12,15 +12,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 @Component
-public class EmployeeValidator {
+public class EmployeeValidator implements Validator {
     private final EmployeeRepository employeeRepository;
-    public static final String BLANK_NAME_ERROR = "Name is blank";
-    public static final String BLANK_SURNAME_ERROR = "Surname is blank";
-    public static final String ONLY_LETTERS_NAME_ERROR = "Name should have only letters";
-    public static final String ONLY_LETTERS_SURNAME_ERROR = "Surname should have only letters";
-    public static final String EMAIL_PATTERN_ERROR = "Email is invalid: ";
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$");
-    private static final Pattern ONLY_LETTERS_PATTERN = Pattern.compile("^[a-zA-Z]*$");
 
     public EmployeeValidator(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;

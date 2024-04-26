@@ -8,16 +8,6 @@ public class CreateEmployeeInputDto {
     private String email;
     private EmployeeTypeDto employeeType;
 
-    public CreateEmployeeInputDto() {
-    }
-
-    public CreateEmployeeInputDto(String name, String surname, String email, EmployeeTypeDto employeeTypeDto) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.employeeType = employeeTypeDto;
-    }
-
     public String getName() {
         return name;
     }
