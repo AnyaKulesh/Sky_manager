@@ -29,7 +29,12 @@ public class CrewValidator implements Validator {
             if (!EMAIL_PATTERN.matcher(crewMemberInputDto.getEmail()).matches()) {
                 errors.add(EMAIL_PATTERN_ERROR + crewMemberInputDto.getEmail());
             }
-            if (crewMemberInputDto.getIsCaptain()) {
+
+            if (crewMemberInputDto.getIsCaptain() == null) {
+                errors.add(String.format("Setup crew member '%s' is captain or not", crewMemberInputDto.getEmail()));
+            }
+
+            if (Boolean.TRUE.equals(crewMemberInputDto.getIsCaptain())) {
                 captainCounter++;
             }
         }
