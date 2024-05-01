@@ -2,7 +2,7 @@ package pl.pingwit.pingwitskymanager.validator;
 
 import java.util.regex.Pattern;
 
-public interface Validator {
+public interface Validator {  //Круто, что вынесла общие константы в одно место, но их лучше хранить в енаме ValidationUtilConstants например назвать
     String BLANK_NAME_ERROR = "Name is blank";
     String BLANK_SURNAME_ERROR = "Surname is blank";
     String ONLY_LETTERS_NAME_ERROR = "Name should have only letters";
