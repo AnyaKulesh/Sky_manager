@@ -9,6 +9,7 @@ public class CreateFlightInputDto {
     private String from;
     private String to;
     private CreateCrewInputDto crew;
+    private Integer existingCrewId;
     private LocalDateTime takeOffDateTime;
     private LocalDateTime travelTime;
 
@@ -26,6 +27,14 @@ public class CreateFlightInputDto {
 
     public void setTravelTime(LocalDateTime travelTime) {
         this.travelTime = travelTime;
+    }
+
+    public Integer getExistingCrewId() {
+        return existingCrewId;
+    }
+
+    public void setExistingCrewId(Integer existingCrewId) {
+        this.existingCrewId = existingCrewId;
     }
 
     public String getRegistrationPlate() {
