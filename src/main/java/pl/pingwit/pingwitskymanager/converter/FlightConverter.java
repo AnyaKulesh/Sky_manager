@@ -1,17 +1,18 @@
 package pl.pingwit.pingwitskymanager.converter;
 
 import org.springframework.stereotype.Component;
+import pl.pingwit.pingwitskymanager.controller.crew.CreateCrewMemberInputDto;
 import pl.pingwit.pingwitskymanager.controller.flight.CreateFlightInputDto;
 import pl.pingwit.pingwitskymanager.controller.flight.FlightDto;
 import pl.pingwit.pingwitskymanager.exceptionhandling.NotFoundException;
+import pl.pingwit.pingwitskymanager.exceptionhandling.ValidationException;
 import pl.pingwit.pingwitskymanager.repository.aircraft.AircraftRepository;
 import pl.pingwit.pingwitskymanager.repository.crew.Crew;
-import pl.pingwit.pingwitskymanager.repository.crew.CrewMember;
 import pl.pingwit.pingwitskymanager.repository.crew.CrewRepository;
 import pl.pingwit.pingwitskymanager.repository.direction.DirectionRepository;
-import pl.pingwit.pingwitskymanager.repository.employee.Employee;
 import pl.pingwit.pingwitskymanager.repository.flight.Flight;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -56,9 +57,20 @@ public class FlightConverter {
                                 flightInputDto.getFrom().trim().toUpperCase(),
                                 flightInputDto.getTo().trim().toUpperCase())
                 )));
-        Crew crew = Optional.ofNullable(flightInputDto.getExistingCrewId())
-                .flatMap(crewRepository::findById)
-                .orElseGet(() -> crewConverter.toEntity(flightInputDto.getCrew()));
+
+        List<Crew> crewList = crewRepository.findByBaseCityAndListOfEmails(
+                flightInputDto.getCrew().getBaseCity(),
+                flightInputDto.getCrew().getCrewMembers().stream()
+                        .map(CreateCrewMemberInputDto::getEmail)
+                        .toList(),
+                flightInputDto.getCrew().getCrewMembers().size());
+        if (crewList.isEmpty()) {
+            throw new NotFoundException("Crew not found");
+        }
+        if (crewList.size() > 1) {
+            throw new ValidationException("More than one crew found, please specify more crew members");
+        }
+        Crew crew = crewList.get(0);
         flight.setCrew(crew);
 
         flight.setTakeOffDateTime(flightInputDto.getTakeOffDateTime());

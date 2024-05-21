@@ -33,8 +33,7 @@ public class Flight {
     private LocalDateTime takeOffDateTime;
 
     @Column(name = "travel_time")
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime travelTime;
+    private Integer travelTime;
 
 
     public Integer getId() {
@@ -77,11 +76,11 @@ public class Flight {
         this.takeOffDateTime = takeOffDateTime;
     }
 
-    public LocalDateTime getTravelTime() {
+    public Integer getTravelTime() {
         return travelTime;
     }
 
-    public void setTravelTime(LocalDateTime travelTime) {
+    public void setTravelTime(Integer travelTime) {
         this.travelTime = travelTime;
     }
 }

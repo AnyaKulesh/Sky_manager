@@ -20,10 +20,6 @@ public class CrewMember {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @Column(name = "is_captain")
-    private Boolean isCaptain;
-
-
     public Integer getId() {
         return id;
     }
@@ -46,13 +42,5 @@ public class CrewMember {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
-    }
-
-    public Boolean getCaptain() {
-        return isCaptain;
-    }
-
-    public void setCaptain(Boolean captain) {
-        isCaptain = captain;
     }
 }

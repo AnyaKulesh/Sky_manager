@@ -5,7 +5,8 @@ import org.springframework.stereotype.Component;
 import pl.pingwit.pingwitskymanager.controller.crew.CreateCrewInputDto;
 import pl.pingwit.pingwitskymanager.controller.crew.CreateCrewMemberInputDto;
 import pl.pingwit.pingwitskymanager.exceptionhandling.ValidationException;
-import pl.pingwit.pingwitskymanager.repository.employee.Employee;
+import pl.pingwit.pingwitskymanager.repository.crew.Crew;
+import pl.pingwit.pingwitskymanager.repository.crew.CrewMember;
 import pl.pingwit.pingwitskymanager.repository.employee.EmployeeType;
 
 import java.util.ArrayList;
@@ -14,10 +15,11 @@ import java.util.List;
 @Component
 public class CrewValidator implements Validator {
 
+    private static final int MIN_NUMBER_OF_PILOTS = 2;
+
     public void validateCrewInput(CreateCrewInputDto crewInputDto) {
         List<String> errors = new ArrayList<>();
 
-        // здесь часть кода лучше вынести в private методы. например:
         validateBaseCity(crewInputDto, errors);
         validateCrewCompleteness(crewInputDto, errors);
 
@@ -26,25 +28,23 @@ public class CrewValidator implements Validator {
         }
     }
 
+    public void validateNumberOfPilots(Crew crew) {
+        int pilotCounter = 0;
+        for (CrewMember crewMember : crew.getCrewMembers()) {
+            if (EmployeeType.PILOT.equals(crewMember.getEmployee().getType())) {
+                pilotCounter++;
+            }
+        }
+        if (pilotCounter < MIN_NUMBER_OF_PILOTS) {
+            throw new ValidationException("Number of pilots should be not less than " + MIN_NUMBER_OF_PILOTS);
+        }
+    }
+
     private void validateCrewCompleteness(CreateCrewInputDto crewInputDto, List<String> errors) {
-        int captainCounter = 0;
         for (CreateCrewMemberInputDto crewMemberInputDto : crewInputDto.getCrewMembers()) {
             if (!EMAIL_PATTERN.matcher(crewMemberInputDto.getEmail()).matches()) {
                 errors.add(EMAIL_PATTERN_ERROR + crewMemberInputDto.getEmail());
             }
-
-            if (crewMemberInputDto.getIsCaptain() == null) {
-                errors.add(String.format("Setup crew member '%s' is captain or not", crewMemberInputDto.getEmail()));
-            }
-
-            if (Boolean.TRUE.equals(crewMemberInputDto.getIsCaptain())) {
-                captainCounter++;
-            }
-        }
-
-        if (captainCounter < 2) {
-            // Number of pilots ? or number of capitans?
-            errors.add("Number of pilots should be not less than 2");
         }
     }
 
@@ -54,18 +54,6 @@ public class CrewValidator implements Validator {
         }
         if (!ONLY_LETTERS_PATTERN.matcher(crewInputDto.getBaseCity()).matches()) {
             errors.add(ONLY_LETTERS_NAME_ERROR);
-        }
-    }
-
-    public void validateEmployeeType(Employee employee, boolean isCaptain) {
-        if ((employee.getType() == EmployeeType.CABIN_CREW) == isCaptain) {
-            throw new ValidationException(
-                    String.format("Employee '%s %s %s' can only be a '%s'",
-                            employee.getName(),
-                            employee.getSurname(),
-                            employee.getEmail(),
-                            employee.getType()
-                    ));
         }
     }
 }

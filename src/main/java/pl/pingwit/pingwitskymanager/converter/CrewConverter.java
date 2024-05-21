@@ -31,8 +31,7 @@ public class CrewConverter {
         crewDto.setId(crew.getId());
         crewDto.setBaseCity(crew.getBaseCity());
         crewDto.setCrewMembers(crew.getCrewMembers().stream()
-                .map(crewMember -> new CrewMemberDto(employeeConverter.employeeToDto(crewMember.getEmployee()),
-                        crewMember.getCaptain()))
+                .map(crewMember -> new CrewMemberDto(employeeConverter.employeeToDto(crewMember.getEmployee())))
                 .toList());
         return crewDto;
     }
@@ -43,6 +42,7 @@ public class CrewConverter {
         crew.setCrewMembers(crewInputDto.getCrewMembers().stream()
                 .map(crewMemberInput -> crewMemberToEntity(crewMemberInput, crew))
                 .toList());
+        crewValidator.validateNumberOfPilots(crew);
         return crew;
     }
 
@@ -53,9 +53,7 @@ public class CrewConverter {
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Employee with email '%s' not found", crewMemberInputDto.getEmail())
                 ));
-        crewValidator.validateEmployeeType(employee, crewMemberInputDto.getIsCaptain());
         crewMember.setEmployee(employee);
-        crewMember.setCaptain(crewMemberInputDto.getIsCaptain());
         crewMember.setCrew(crew);
         return crewMember;
     }

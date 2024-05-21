@@ -12,7 +12,7 @@ public class FlightDto {
     private CrewDto crew;
     private DirectionDto direction;
     private LocalDateTime takeOffDateTime;
-    private LocalDateTime travelTime;
+    private Integer travelTime;
 
     public Integer getId() {
         return id;
@@ -54,11 +54,11 @@ public class FlightDto {
         this.takeOffDateTime = takeOffDateTime;
     }
 
-    public LocalDateTime getTravelTime() {
+    public Integer getTravelTime() {
         return travelTime;
     }
 
-    public void setTravelTime(LocalDateTime travelTime) {
+    public void setTravelTime(Integer travelTime) {
         this.travelTime = travelTime;
     }
 }
