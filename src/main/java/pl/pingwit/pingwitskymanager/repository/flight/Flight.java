@@ -20,7 +20,7 @@ public class Flight {
     @JoinColumn(name = "aircraft_id")
     private Aircraft aircraft;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name =  "crew_id")
     private Crew crew;
 

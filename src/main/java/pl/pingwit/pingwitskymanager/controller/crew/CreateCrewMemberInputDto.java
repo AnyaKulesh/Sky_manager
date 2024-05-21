@@ -1,7 +1,8 @@
 package pl.pingwit.pingwitskymanager.controller.crew;
 
 public class CreateCrewMemberInputDto {
-    private String email;
+    private String email;  // почему здесь ты использовала имэйл? я бы здесь ожидал Employee Id. Твой подход работает, но он совсем не типичный для приложений такого типа
+    //
     private Boolean isCaptain;
 
     public String getEmail() {

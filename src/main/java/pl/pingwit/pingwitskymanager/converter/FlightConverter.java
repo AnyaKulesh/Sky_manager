@@ -5,10 +5,14 @@ import pl.pingwit.pingwitskymanager.controller.flight.CreateFlightInputDto;
 import pl.pingwit.pingwitskymanager.controller.flight.FlightDto;
 import pl.pingwit.pingwitskymanager.exceptionhandling.NotFoundException;
 import pl.pingwit.pingwitskymanager.repository.aircraft.AircraftRepository;
+import pl.pingwit.pingwitskymanager.repository.crew.Crew;
 import pl.pingwit.pingwitskymanager.repository.crew.CrewMember;
+import pl.pingwit.pingwitskymanager.repository.crew.CrewRepository;
 import pl.pingwit.pingwitskymanager.repository.direction.DirectionRepository;
 import pl.pingwit.pingwitskymanager.repository.employee.Employee;
 import pl.pingwit.pingwitskymanager.repository.flight.Flight;
+
+import java.util.Optional;
 
 @Component
 public class FlightConverter {
@@ -17,13 +21,15 @@ public class FlightConverter {
     private final DirectionConverter directionConverter;
     private final AircraftRepository aircraftRepository;
     private final DirectionRepository directionRepository;
+    private final CrewRepository crewRepository;
 
-    public FlightConverter(AircraftConverter aircraftConverter, CrewConverter crewConverter, DirectionConverter directionConverter, AircraftRepository aircraftRepository, DirectionRepository directionRepository) {
+    public FlightConverter(AircraftConverter aircraftConverter, CrewConverter crewConverter, DirectionConverter directionConverter, AircraftRepository aircraftRepository, DirectionRepository directionRepository, CrewRepository crewRepository) {
         this.aircraftConverter = aircraftConverter;
         this.crewConverter = crewConverter;
         this.directionConverter = directionConverter;
         this.aircraftRepository = aircraftRepository;
         this.directionRepository = directionRepository;
+        this.crewRepository = crewRepository;
     }
 
     public FlightDto toDto(Flight flight) {
@@ -50,11 +56,11 @@ public class FlightConverter {
                                 flightInputDto.getFrom().trim().toUpperCase(),
                                 flightInputDto.getTo().trim().toUpperCase())
                 )));
-        /*
-        Нам нужно написать запрос в базу: найти экипаж (crew) по списку членов экипажа (crew members)
-        Если не нашли, то сохранить в базу новый экипаж. Можем ли мы это сделать также, как при создании aircraft (aircraft model создавался при создании aircraft)
-        flight.setCrew(?);
-         */
+        Crew crew = Optional.ofNullable(flightInputDto.getExistingCrewId())
+                .flatMap(crewRepository::findById)
+                .orElseGet(() -> crewConverter.toEntity(flightInputDto.getCrew()));
+        flight.setCrew(crew);
+
         flight.setTakeOffDateTime(flightInputDto.getTakeOffDateTime());
         flight.setTravelTime(flightInputDto.getTravelTime());
 

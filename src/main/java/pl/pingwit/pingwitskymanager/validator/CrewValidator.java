@@ -16,14 +16,17 @@ public class CrewValidator implements Validator {
 
     public void validateCrewInput(CreateCrewInputDto crewInputDto) {
         List<String> errors = new ArrayList<>();
-        if (StringUtils.isBlank(crewInputDto.getBaseCity().trim())) {
-            errors.add(BLANK_NAME_ERROR);
-        }
 
-        if (!ONLY_LETTERS_PATTERN.matcher(crewInputDto.getBaseCity()).matches()) {
-            errors.add(ONLY_LETTERS_NAME_ERROR);
-        }
+        // здесь часть кода лучше вынести в private методы. например:
+        validateBaseCity(crewInputDto, errors);
+        validateCrewCompleteness(crewInputDto, errors);
 
+        if (!errors.isEmpty()) {
+            throw new ValidationException("Crew data is not valid: ", errors);
+        }
+    }
+
+    private void validateCrewCompleteness(CreateCrewInputDto crewInputDto, List<String> errors) {
         int captainCounter = 0;
         for (CreateCrewMemberInputDto crewMemberInputDto : crewInputDto.getCrewMembers()) {
             if (!EMAIL_PATTERN.matcher(crewMemberInputDto.getEmail()).matches()) {
@@ -40,11 +43,17 @@ public class CrewValidator implements Validator {
         }
 
         if (captainCounter < 2) {
+            // Number of pilots ? or number of capitans?
             errors.add("Number of pilots should be not less than 2");
         }
+    }
 
-        if(!errors.isEmpty()){
-            throw new ValidationException("Crew data is not valid: ", errors);
+    private void validateBaseCity(CreateCrewInputDto crewInputDto, List<String> errors) {
+        if (StringUtils.isBlank(crewInputDto.getBaseCity().trim())) {
+            errors.add(BLANK_NAME_ERROR);
+        }
+        if (!ONLY_LETTERS_PATTERN.matcher(crewInputDto.getBaseCity()).matches()) {
+            errors.add(ONLY_LETTERS_NAME_ERROR);
         }
     }
 
