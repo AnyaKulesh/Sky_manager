@@ -12,6 +12,7 @@ public class AircraftModelValidator {
     }
 
     public void validateOnCreate(String name) {
+        // здесь также можно добавить проверку, что имя не пустое
         if (aircraftModelRepository.existsByName(name)) {
             throw new AlreadyExistsException(String.format("Aircraft model with name '%s' already exists", name));
         }
