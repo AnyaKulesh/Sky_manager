@@ -31,6 +31,7 @@ public class FlightServiceImpl implements FlightService{
     @Override
     public Integer createFlight(CreateFlightInputDto flightInputDto) {
         crewValidator.validateCrewInput(flightInputDto.getCrew());
+        //  также можно создать flightValidator и проверить необходимы поля.
         return flightRepository.save(flightConverter.flightToEntity(flightInputDto)).getId();
     }
 }

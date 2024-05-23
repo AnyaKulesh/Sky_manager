@@ -17,4 +17,6 @@ public class AircraftValidator {
             throw new AlreadyExistsException(String.format("Aircraft with registration plate '%s' already exists", registrationPlate));
         }
     }
+
+    // нужно создать метод validateOnCreate
 }

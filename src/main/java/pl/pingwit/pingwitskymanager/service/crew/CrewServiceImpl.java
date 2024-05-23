@@ -39,7 +39,7 @@ public class CrewServiceImpl implements CrewService {
 
     @Override
     public Integer createCrew(CreateCrewInputDto crewInputDto) {
-        crewValidator.validateCrewInput(crewInputDto);
+        crewValidator.validateCrewInput(crewInputDto); // здесь надо проверить комплектность экипажа - наличие как минимум двух пилотов
         return crewRepository.save(crewConverter.toEntity(crewInputDto)).getId();
     }
 }

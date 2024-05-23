@@ -23,4 +23,6 @@ public class FlightController {
     public Integer createFlight(@RequestBody CreateFlightInputDto flightInputDto) {
         return flightService.createFlight(flightInputDto);
     }
+
+    // добавь здесь таже эндпоинт на удаление рейса по id. для примера
 }

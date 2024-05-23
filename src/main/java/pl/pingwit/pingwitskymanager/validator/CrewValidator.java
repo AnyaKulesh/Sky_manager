@@ -28,6 +28,7 @@ public class CrewValidator implements Validator {
         }
     }
 
+    // этот метод нужно удалить и сделать эту проверку в validateCrewCompleteness
     public void validateNumberOfPilots(Crew crew) {
         int pilotCounter = 0;
         for (CrewMember crewMember : crew.getCrewMembers()) {
@@ -35,12 +36,20 @@ public class CrewValidator implements Validator {
                 pilotCounter++;
             }
         }
+        /*рекомендую здеь использовать стрим вместо строк 32-37
+        int pilotCounter = crew.getCrewMembers().stream()
+                .filter(crewMember -> EmployeeType.PILOT.equals(crewMember.getEmployee().getType()))
+                .count();*/
         if (pilotCounter < MIN_NUMBER_OF_PILOTS) {
             throw new ValidationException("Number of pilots should be not less than " + MIN_NUMBER_OF_PILOTS);
         }
     }
 
     private void validateCrewCompleteness(CreateCrewInputDto crewInputDto, List<String> errors) {
+        // если смотреть на название метода, то я ожидал бы здесь проверку того, что в экипаже есть два пилота (и какие еще есть требования к команде?)
+        // то есть по имэйлам достать всех employee и посчитать количество пилотов
+
+        // эта проверка излишняя, на мой взгляд:
         for (CreateCrewMemberInputDto crewMemberInputDto : crewInputDto.getCrewMembers()) {
             if (!EMAIL_PATTERN.matcher(crewMemberInputDto.getEmail()).matches()) {
                 errors.add(EMAIL_PATTERN_ERROR + crewMemberInputDto.getEmail());

@@ -41,6 +41,8 @@ public class AircraftServiceImpl implements AircraftService {
 
     @Override
     public Integer createAircraft(CreateAircraftInputDto aircraftInputDto) {
+        // здесь надо добавить в валидаторе метод validateOnCreate(aircraftInputDto)
+        // в методе проверить уникальность номера + не null всех обязательных полей
         Aircraft aircraft = aircraftConverter.toEntity(aircraftInputDto);
         return aircraftRepository.save(aircraft).getId();
     }
@@ -51,7 +53,7 @@ public class AircraftServiceImpl implements AircraftService {
                 .orElseThrow(() -> new NotFoundException("Aircraft not found!"));
         if (!registrationPlate.equals(aircraft.getRegistrationPlate())) {
             aircraftValidator.validateOnUpdate(registrationPlate);
-        }
+        } // валидацию можно сделать первым шагом. если упадет - сэкономим один запрос к БД, на загрузку самолета
         aircraft.setRegistrationPlate(registrationPlate);
         aircraftRepository.save(aircraft);
     }

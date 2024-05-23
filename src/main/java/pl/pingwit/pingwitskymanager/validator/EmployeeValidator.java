@@ -4,10 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import pl.pingwit.pingwitskymanager.controller.employee.CreateEmployeeInputDto;
 import pl.pingwit.pingwitskymanager.exceptionhandling.ValidationException;
+import pl.pingwit.pingwitskymanager.repository.employee.Employee;
 import pl.pingwit.pingwitskymanager.repository.employee.EmployeeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -47,6 +49,10 @@ public class EmployeeValidator implements Validator {
     }
 
     private boolean validateUniqueEmail(String email) {
+        // здесь бы я лучше использовал проверку
+       /*  Optional<Employee> byEmail = employeeRepository.findByEmail(email);
+         return byEmail.isEmpty();*/
+        // твой вариант рабочий, но будет неэффктивен при большом количесвте работников. Ты передаешь по сети много данных. БД сделает этот поиск быстрее
         Set<String> emails = employeeRepository.findAllEmails();
         return !emails.contains(email);
     }

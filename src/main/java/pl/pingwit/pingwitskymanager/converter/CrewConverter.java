@@ -18,6 +18,7 @@ public class CrewConverter {
     private final EmployeeRepository employeeRepository;
     private final EmployeeConverter employeeConverter;
 
+    // crewValidator здесь быть не должно. в конвертерах не должно быть валидации
     private final CrewValidator crewValidator;
 
     public CrewConverter(EmployeeRepository employeeRepository, EmployeeConverter employeeConverter, CrewValidator crewValidator) {
@@ -42,6 +43,8 @@ public class CrewConverter {
         crew.setCrewMembers(crewInputDto.getCrewMembers().stream()
                 .map(crewMemberInput -> crewMemberToEntity(crewMemberInput, crew))
                 .toList());
+        // этот вызов здесь лишний. такая валидация должна быть сделана ранее, в pl.pingwit.pingwitskymanager.validator.CrewValidator.validateCrewInput
+        // в конвертерах в принципе не должно быть валидации, это не их ответственность
         crewValidator.validateNumberOfPilots(crew);
         return crew;
     }

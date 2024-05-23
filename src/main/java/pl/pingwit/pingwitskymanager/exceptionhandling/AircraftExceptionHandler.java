@@ -8,7 +8,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
-public class AircraftExceptionHandler {
+public class AircraftExceptionHandler { // из названия кажется, что он ловит только ошибки по aircraft. лучше переименовать в SkyManagerExceptionHandler
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
