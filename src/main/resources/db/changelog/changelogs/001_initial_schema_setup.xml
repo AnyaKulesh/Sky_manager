@@ -8,15 +8,6 @@
         </sql>
     </changeSet>
 
-    <!--aircraft_model (id, name)
-aircraft (id, registration_plate, model_id, passenger_capacity, max_gross_weight,course_speed_limit и что еще нужно)
-employee (id, name, surname, type (пилот или бортпроводник, предлагаю это хранить в енаме) +
- у сотрудника есть список моделей самолетов, на которых ему разрешено работать, это будет
-  реализовано при помощи дополнительной таблицы: employee_id, plane_model_id)
-рейс (id, plane_id, crew_id, destination_id, takeoff_date_time, travel_time)
-экипаж (id, base_city, + дополнительная таблица для хранения списка членов экипажа
-( id, crew_id, employee_id, is_captain
--->
     <changeSet id="create_aircraft_model_id_seq" author="anna">
         <createSequence sequenceName="aircraft_model_id_seq" incrementBy="1" schemaName="sky_manager"/>
     </changeSet>

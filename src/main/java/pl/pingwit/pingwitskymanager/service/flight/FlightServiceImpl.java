@@ -34,4 +34,9 @@ public class FlightServiceImpl implements FlightService{
         //  также можно создать flightValidator и проверить необходимы поля.
         return flightRepository.save(flightConverter.flightToEntity(flightInputDto)).getId();
     }
+
+    @Override
+    public void deleteFlight(Integer id) {
+        flightRepository.deleteById(id);
+    }
 }

@@ -5,6 +5,7 @@ import pl.pingwit.pingwitskymanager.controller.crew.CreateCrewInputDto;
 import pl.pingwit.pingwitskymanager.controller.crew.CrewDto;
 import pl.pingwit.pingwitskymanager.converter.CrewConverter;
 import pl.pingwit.pingwitskymanager.exceptionhandling.NotFoundException;
+import pl.pingwit.pingwitskymanager.repository.crew.Crew;
 import pl.pingwit.pingwitskymanager.repository.crew.CrewRepository;
 import pl.pingwit.pingwitskymanager.validator.CrewValidator;
 
@@ -39,7 +40,9 @@ public class CrewServiceImpl implements CrewService {
 
     @Override
     public Integer createCrew(CreateCrewInputDto crewInputDto) {
-        crewValidator.validateCrewInput(crewInputDto); // здесь надо проверить комплектность экипажа - наличие как минимум двух пилотов
-        return crewRepository.save(crewConverter.toEntity(crewInputDto)).getId();
+        crewValidator.validateCrewInput(crewInputDto);
+        Crew crew = crewConverter.toEntity(crewInputDto);
+        crewValidator.validateCrew(crew);
+        return crewRepository.save(crew).getId();
     }
 }

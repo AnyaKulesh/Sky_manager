@@ -2,6 +2,7 @@ package pl.pingwit.pingwitskymanager.validator;
 
 import org.springframework.stereotype.Component;
 import pl.pingwit.pingwitskymanager.exceptionhandling.AlreadyExistsException;
+import pl.pingwit.pingwitskymanager.exceptionhandling.ValidationException;
 import pl.pingwit.pingwitskymanager.repository.aircraftmodel.AircraftModelRepository;
 @Component
 public class AircraftModelValidator {
@@ -12,7 +13,9 @@ public class AircraftModelValidator {
     }
 
     public void validateOnCreate(String name) {
-        // здесь также можно добавить проверку, что имя не пустое
+        if(name == null){
+            throw new ValidationException("Aircraft model name should be not null");
+        }
         if (aircraftModelRepository.existsByName(name)) {
             throw new AlreadyExistsException(String.format("Aircraft model with name '%s' already exists", name));
         }

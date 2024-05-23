@@ -8,4 +8,6 @@ import java.util.List;
 public interface FlightService {
     List<FlightDto> findAll();
     Integer createFlight(CreateFlightInputDto flightInputDto);
+
+    void deleteFlight(Integer id);
 }

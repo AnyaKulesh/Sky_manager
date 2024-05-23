@@ -10,21 +10,16 @@ import pl.pingwit.pingwitskymanager.repository.crew.Crew;
 import pl.pingwit.pingwitskymanager.repository.crew.CrewMember;
 import pl.pingwit.pingwitskymanager.repository.employee.Employee;
 import pl.pingwit.pingwitskymanager.repository.employee.EmployeeRepository;
-import pl.pingwit.pingwitskymanager.validator.CrewValidator;
-
 
 @Component
 public class CrewConverter {
     private final EmployeeRepository employeeRepository;
     private final EmployeeConverter employeeConverter;
 
-    // crewValidator здесь быть не должно. в конвертерах не должно быть валидации
-    private final CrewValidator crewValidator;
 
-    public CrewConverter(EmployeeRepository employeeRepository, EmployeeConverter employeeConverter, CrewValidator crewValidator) {
+    public CrewConverter(EmployeeRepository employeeRepository, EmployeeConverter employeeConverter) {
         this.employeeRepository = employeeRepository;
         this.employeeConverter = employeeConverter;
-        this.crewValidator = crewValidator;
     }
 
     public CrewDto toDto(Crew crew) {
@@ -43,9 +38,6 @@ public class CrewConverter {
         crew.setCrewMembers(crewInputDto.getCrewMembers().stream()
                 .map(crewMemberInput -> crewMemberToEntity(crewMemberInput, crew))
                 .toList());
-        // этот вызов здесь лишний. такая валидация должна быть сделана ранее, в pl.pingwit.pingwitskymanager.validator.CrewValidator.validateCrewInput
-        // в конвертерах в принципе не должно быть валидации, это не их ответственность
-        crewValidator.validateNumberOfPilots(crew);
         return crew;
     }
 

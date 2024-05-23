@@ -10,8 +10,8 @@ import pl.pingwit.pingwitskymanager.repository.employee.EmployeeRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Pattern;
+
+import static pl.pingwit.pingwitskymanager.validator.ValidationUtilConstants.*;
 
 @Component
 public class EmployeeValidator implements Validator {
@@ -24,16 +24,16 @@ public class EmployeeValidator implements Validator {
     public void validateOnCreate(CreateEmployeeInputDto createEmployeeInputDto) {
         List<String> errors = new ArrayList<>();
         if (StringUtils.isBlank(createEmployeeInputDto.getName().trim())) {
-            errors.add(BLANK_NAME_ERROR);
+            errors.add(BLANK_NAME_ERROR.toString());
         }
         if (StringUtils.isBlank(createEmployeeInputDto.getSurname().trim())) {
-            errors.add(BLANK_SURNAME_ERROR);
+            errors.add(BLANK_SURNAME_ERROR.toString());
         }
         if (!ONLY_LETTERS_PATTERN.matcher(createEmployeeInputDto.getName()).matches()) {
-            errors.add(ONLY_LETTERS_NAME_ERROR);
+            errors.add(ONLY_LETTERS_NAME_ERROR.toString());
         }
         if (!ONLY_LETTERS_PATTERN.matcher(createEmployeeInputDto.getName()).matches()) {
-            errors.add(ONLY_LETTERS_SURNAME_ERROR);
+            errors.add(ONLY_LETTERS_SURNAME_ERROR.toString());
         }
 
         if (!EMAIL_PATTERN.matcher(createEmployeeInputDto.getEmail()).matches()) {
@@ -49,12 +49,8 @@ public class EmployeeValidator implements Validator {
     }
 
     private boolean validateUniqueEmail(String email) {
-        // здесь бы я лучше использовал проверку
-       /*  Optional<Employee> byEmail = employeeRepository.findByEmail(email);
-         return byEmail.isEmpty();*/
-        // твой вариант рабочий, но будет неэффктивен при большом количесвте работников. Ты передаешь по сети много данных. БД сделает этот поиск быстрее
-        Set<String> emails = employeeRepository.findAllEmails();
-        return !emails.contains(email);
+        Optional<Employee> byEmail = employeeRepository.findByEmail(email);
+        return byEmail.isEmpty();
     }
 }
 

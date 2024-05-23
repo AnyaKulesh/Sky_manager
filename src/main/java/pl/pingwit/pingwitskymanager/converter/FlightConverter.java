@@ -13,7 +13,7 @@ import pl.pingwit.pingwitskymanager.repository.direction.DirectionRepository;
 import pl.pingwit.pingwitskymanager.repository.flight.Flight;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Component
 public class FlightConverter {

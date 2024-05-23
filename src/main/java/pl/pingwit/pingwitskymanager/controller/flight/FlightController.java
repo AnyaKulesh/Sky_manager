@@ -24,5 +24,10 @@ public class FlightController {
         return flightService.createFlight(flightInputDto);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteFlight(@PathVariable(name = "id") Integer id) {
+        flightService.deleteFlight(id);
+    }
+
     // добавь здесь таже эндпоинт на удаление рейса по id. для примера
 }
