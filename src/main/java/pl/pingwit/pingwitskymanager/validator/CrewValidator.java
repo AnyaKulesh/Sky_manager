@@ -51,7 +51,7 @@ public class CrewValidator implements Validator {
     private void validateCrewEmails(CreateCrewInputDto crewInputDto, List<String> errors) {
         for (CreateCrewMemberInputDto crewMemberInputDto : crewInputDto.getCrewMembers()) {
             if (!EMAIL_PATTERN.matcher(crewMemberInputDto.getEmail()).matches()) {
-                errors.add(EMAIL_PATTERN_ERROR.toString() + crewMemberInputDto.getEmail());
+                errors.add(EMAIL_PATTERN_ERROR + crewMemberInputDto.getEmail());
             }
         }
     }

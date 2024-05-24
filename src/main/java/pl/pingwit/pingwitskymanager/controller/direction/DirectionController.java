@@ -1,10 +1,12 @@
 package pl.pingwit.pingwitskymanager.controller.direction;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import pl.pingwit.pingwitskymanager.service.direction.DirectionService;
 
 import java.util.List;
 
+@Tag(name = "Direction API")
 @RestController
 @RequestMapping ("/direction")
 public class DirectionController {

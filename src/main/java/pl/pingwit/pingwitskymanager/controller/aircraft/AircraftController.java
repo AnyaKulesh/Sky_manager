@@ -1,10 +1,12 @@
 package pl.pingwit.pingwitskymanager.controller.aircraft;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import pl.pingwit.pingwitskymanager.service.aircraft.AircraftService;
 
 import java.util.List;
 
+@Tag(name = "Aircraft API")
 @RestController
 @RequestMapping("/aircraft")
 public class AircraftController {

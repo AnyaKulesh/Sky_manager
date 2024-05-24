@@ -1,10 +1,12 @@
 package pl.pingwit.pingwitskymanager.controller.crew;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import pl.pingwit.pingwitskymanager.service.crew.CrewService;
 
 import java.util.List;
 
+@Tag(name = "Crew API")
 @RestController
 @RequestMapping("/crew")
 public class CrewController {

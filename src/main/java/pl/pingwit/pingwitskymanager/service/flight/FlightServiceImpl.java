@@ -5,20 +5,20 @@ import pl.pingwit.pingwitskymanager.controller.flight.CreateFlightInputDto;
 import pl.pingwit.pingwitskymanager.controller.flight.FlightDto;
 import pl.pingwit.pingwitskymanager.converter.FlightConverter;
 import pl.pingwit.pingwitskymanager.repository.flight.FlightRepository;
-import pl.pingwit.pingwitskymanager.validator.CrewValidator;
+import pl.pingwit.pingwitskymanager.validator.FlightValidator;
 
 import java.util.List;
 
 @Service
-public class FlightServiceImpl implements FlightService{
+public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
     private final FlightConverter flightConverter;
-    private final CrewValidator crewValidator;
+    private final FlightValidator flightValidator;
 
-    public FlightServiceImpl(FlightRepository flightRepository, FlightConverter flightConverter, CrewValidator crewValidator) {
+    public FlightServiceImpl(FlightRepository flightRepository, FlightConverter flightConverter, FlightValidator flightValidator) {
         this.flightRepository = flightRepository;
         this.flightConverter = flightConverter;
-        this.crewValidator = crewValidator;
+        this.flightValidator = flightValidator;
     }
 
     @Override
@@ -30,8 +30,7 @@ public class FlightServiceImpl implements FlightService{
 
     @Override
     public Integer createFlight(CreateFlightInputDto flightInputDto) {
-        crewValidator.validateCrewInput(flightInputDto.getCrew());
-        //  также можно создать flightValidator и проверить необходимы поля.
+        flightValidator.validateOnCreate(flightInputDto);
         return flightRepository.save(flightConverter.flightToEntity(flightInputDto)).getId();
     }
 

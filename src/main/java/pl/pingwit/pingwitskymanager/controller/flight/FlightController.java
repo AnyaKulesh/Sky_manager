@@ -1,10 +1,12 @@
 package pl.pingwit.pingwitskymanager.controller.flight;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import pl.pingwit.pingwitskymanager.service.flight.FlightService;
 
 import java.util.List;
 
+@Tag(name = "Flight API")
 @RestController
 @RequestMapping("/flight")
 public class FlightController {
@@ -29,5 +31,4 @@ public class FlightController {
         flightService.deleteFlight(id);
     }
 
-    // добавь здесь таже эндпоинт на удаление рейса по id. для примера
 }
