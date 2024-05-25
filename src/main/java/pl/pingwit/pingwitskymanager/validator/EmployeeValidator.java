@@ -32,15 +32,13 @@ public class EmployeeValidator implements Validator {
         if (!ONLY_LETTERS_PATTERN.matcher(createEmployeeInputDto.getName()).matches()) {
             errors.add(ONLY_LETTERS_NAME_ERROR.toString());
         }
-        if (!ONLY_LETTERS_PATTERN.matcher(createEmployeeInputDto.getName()).matches()) {
+        if (!ONLY_LETTERS_PATTERN.matcher(createEmployeeInputDto.getSurname()).matches()) {
             errors.add(ONLY_LETTERS_SURNAME_ERROR.toString());
         }
 
         if (!EMAIL_PATTERN.matcher(createEmployeeInputDto.getEmail()).matches()) {
             errors.add(EMAIL_PATTERN_ERROR + createEmployeeInputDto.getEmail());
-        }
-
-        if (!validateUniqueEmail(createEmployeeInputDto.getEmail())) {
+        } else if (!validateUniqueEmail(createEmployeeInputDto.getEmail())) {
             errors.add("Email " + createEmployeeInputDto.getEmail() + " already exists");
         }
         if (!errors.isEmpty()) {
