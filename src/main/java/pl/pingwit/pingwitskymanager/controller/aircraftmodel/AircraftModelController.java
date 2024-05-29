@@ -6,9 +6,11 @@ import pl.pingwit.pingwitskymanager.service.aircraftmodel.AircraftModelService;
 
 import java.util.List;
 
+import static pl.pingwit.pingwitskymanager.controller.UrlUtils.AIRCRAFT_MODEL_URL;
+
 @Tag(name = "Aircraft Model API")
 @RestController
-@RequestMapping("/aircraft/model")
+@RequestMapping(AIRCRAFT_MODEL_URL)
 public class AircraftModelController {
     private final AircraftModelService aircraftModelService;
 

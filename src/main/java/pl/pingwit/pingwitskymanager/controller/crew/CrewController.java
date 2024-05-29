@@ -6,9 +6,11 @@ import pl.pingwit.pingwitskymanager.service.crew.CrewService;
 
 import java.util.List;
 
+import static pl.pingwit.pingwitskymanager.controller.UrlUtils.CREW_URL;
+
 @Tag(name = "Crew API")
 @RestController
-@RequestMapping("/crew")
+@RequestMapping(CREW_URL)
 public class CrewController {
     private final CrewService crewService;
 

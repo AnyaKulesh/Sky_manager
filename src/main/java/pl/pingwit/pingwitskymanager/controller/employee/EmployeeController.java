@@ -6,9 +6,11 @@ import pl.pingwit.pingwitskymanager.service.employee.EmployeeService;
 
 import java.util.List;
 
+import static pl.pingwit.pingwitskymanager.controller.UrlUtils.EMPLOYEE_URL;
+
 @Tag(name = "Employee API")
 @RestController
-@RequestMapping("/employee")
+@RequestMapping(EMPLOYEE_URL)
 public class EmployeeController {
     private final EmployeeService employeeService;
 

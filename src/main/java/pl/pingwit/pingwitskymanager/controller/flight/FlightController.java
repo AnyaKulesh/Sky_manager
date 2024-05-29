@@ -6,9 +6,11 @@ import pl.pingwit.pingwitskymanager.service.flight.FlightService;
 
 import java.util.List;
 
+import static pl.pingwit.pingwitskymanager.controller.UrlUtils.FLIGHT_URL;
+
 @Tag(name = "Flight API")
 @RestController
-@RequestMapping("/flight")
+@RequestMapping(FLIGHT_URL)
 public class FlightController {
     private final FlightService flightService;
 

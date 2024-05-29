@@ -6,9 +6,11 @@ import pl.pingwit.pingwitskymanager.service.direction.DirectionService;
 
 import java.util.List;
 
+import static pl.pingwit.pingwitskymanager.controller.UrlUtils.DIRECTION_URL;
+
 @Tag(name = "Direction API")
 @RestController
-@RequestMapping ("/direction")
+@RequestMapping (DIRECTION_URL)
 public class DirectionController {
     private final DirectionService directionService;
 
